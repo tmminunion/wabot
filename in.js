@@ -27,9 +27,10 @@ routerFiles.forEach((file) => {
 
   app.use(routeName, router);
 });
+
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`erver berjalan di port ${PORT}`);
+  console.log(`Server berjalan di port ${PORT}`);
 });
 
 client.on("message", async (msg) => {
