@@ -1,0 +1,37 @@
+{
+  "name": "wa",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "@pspdfkit/nodejs": "^0.0.4",
+    "axios": "^1.6.7",
+    "canvas": "^2.11.2",
+    "db-json": "^0.1.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "googleapis": "^133.0.0",
+    "jimp": "^0.22.10",
+    "json-server": "^1.0.0-alpha.23",
+    "libreoffice-convert": "^1.5.1",
+    "mysql": "^2.18.1",
+    "openai": "^4.28.0",
+    "pdfkit": "^0.14.0",
+    "puppeteer": "^22.1.0",
+    "qr-image": "^3.2.0",
+    "qrcode": "^1.5.3",
+    "qrcode-reader": "^1.0.4",
+    "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4",
+    "terminal-qrcode": "^1.0.3",
+    "whatsapp-web.js": "^1.23.0"
+  }
+}

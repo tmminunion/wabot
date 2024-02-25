@@ -1,0 +1,33 @@
+# Ignore .env file
+.env
+.creden.json
+
+# Ignore node_modules folder
+/node_modules/
+/.wwebjs_auth/
+/.wwebjs_cache/
+
+
+
+server {
+    listen 80;
+    server_name 34.16.191.209;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+sudo certbot --nginx -d 34.16.191.209
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/wabot.bungtemin.net/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/wabot.bungtemin.net/privkey.pem
+
+ssl_certificate /etc/letsencrypt/live/wabot.bungtemin.net/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/wabot.bungtemin.net/privkey.pem;
