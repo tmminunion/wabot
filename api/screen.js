@@ -27,7 +27,26 @@ async function takess(url) {
   // Menyimpan gambar dalam format base64 ke dalam file dengan nama acak
   return base64String;
 }
+async function takessw() {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  // Mengatur ukuran viewport halaman agar sesuai dengan resolusi Full HD
+  await page.setViewport({
+    width: 600,
+    height: 730,
+    deviceScaleFactor: 1,
+  });
+  await page.goto("https://api.bungtemin.net/voicemember/view");
 
+  // Mengambil tangkapan layar
+  const screenshotBuffer = await page.screenshot();
+  await browser.close();
+
+  // Konversi buffer gambar menjadi string base64
+  const base64String = screenshotBuffer.toString("base64");
+  // Menyimpan gambar dalam format base64 ke dalam file dengan nama acak
+  return base64String;
+}
 async function takesslan(url) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -86,4 +105,5 @@ function generateRandomString(length) {
 module.exports = {
   takess: takess,
   takesslan: takesslan,
+  takessw: takessw,
 };

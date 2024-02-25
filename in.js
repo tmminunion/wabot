@@ -1,9 +1,8 @@
-const socket = require("./websocket/socket");
 const fs = require("fs");
 const path = require("path");
 const { fetchAPI, getPdfAsBase64 } = require("./api/axios");
 const { MessageMedia, client } = require("./api/whatapp");
-const { takess } = require("./api/screen");
+const { takess, takessw } = require("./api/screen");
 const { uploadAndConvertToPDF } = require("./api/googleapis");
 const { readQRCodeFromBase64 } = require("./api/bacaqr");
 const { sendPdfMessage } = require("./modul/sendmodul");
@@ -73,6 +72,15 @@ client.on("message", async (msg) => {
     msg.react("🕵️‍♂️");
     const websiteUrl = msg.body.split(" ")[1];
     takess(websiteUrl)
+      .then((base64String) => {
+        const media = new MessageMedia("image/png", base64String);
+        msg.reply(media);
+      })
+      .catch((error) => console.error("Gagal mengambil screenshot:", error));
+  } else if (msg.body.startsWith("!ssw")) {
+    msg.react("🕵️‍♂️");
+    const websiteUrl = msg.body.split(" ")[1];
+    takessw(websiteUrl)
       .then((base64String) => {
         const media = new MessageMedia("image/png", base64String);
         msg.reply(media);
@@ -168,7 +176,7 @@ async function main() {
   setInterval(async () => {
     // console.log("update KP", KP);
     //  const dtek = await updatePDF(KP);
-    console.log(dtek);
+    //console.log(dtek);
     KP = (KP % 21) + 1; // Kembali ke KP=1 setelah mencapai KP=21
   }, 30 * 60 * 1000); // 3 menit
 }
