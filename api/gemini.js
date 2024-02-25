@@ -1,5 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const genAI = new GoogleGenerativeAI("AIzaSyAba7rtDU8wcJwm5Hu-EYWhumRjQ2RFBCM");
+const genAI = new GoogleGenerativeAI(process.env.API_KEY_GEMINI);
 const { MessageMedia, client } = require("./whatapp");
 async function gemini(prompt) {
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });

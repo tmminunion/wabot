@@ -3,6 +3,7 @@ const http = require("http");
 const axios = require("axios");
 const fs = require("fs");
 const { MessageMedia, client } = require("./whatapp");
+require("dotenv").config();
 
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -19,7 +20,7 @@ function generateString(length) {
 
 const imgna = generateString(15); //63687346378dfbvhfihjf
 console.log(imgna);
-const apiKeynya = "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";
+const apiKeynya = process.env.API_KEY_OPENAI;
 
 // Konfigurasi klien OpenAI
 const openaix = new openai.OpenAI({ apiKey: apiKeynya });
@@ -27,9 +28,9 @@ const openaix = new openai.OpenAI({ apiKey: apiKeynya });
 async function main(chatId, content) {
   const completion = await openaix.completions.create({
     model: "gpt-3.5-turbo-instruct",
-    prompt:content,
-    max_tokens:3050,
-    temperature:0,
+    prompt: content,
+    max_tokens: 3050,
+    temperature: 0,
   });
 
   console.log(completion.choices[0]);
@@ -61,11 +62,7 @@ async function downloadImage(url, filename) {
   });
 }
 async function openaimsg(msg) {
-  if (
-    msg.body.startsWith("/tanya ") ||
-    msg.body.startsWith("/Tanya ")
-  ) {
-    
+  if (msg.body.startsWith("/tanya ") || msg.body.startsWith("/Tanya ")) {
     let text = msg.body;
     let hasil = text.substring(text.indexOf(" ") + 1);
     msg.react("🕵️‍♂️");
@@ -75,7 +72,6 @@ async function openaimsg(msg) {
     msg.body.startsWith("#IMG ") ||
     msg.body.startsWith("#Img ")
   ) {
-   
     let text = msg.body;
     let hasil = text.substring(text.indexOf(" ") + 1);
     msg.react("🕵️‍♂️");

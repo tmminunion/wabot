@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { MessageMedia, client } = require("./whatapp");
 const headers = {
-  apikey: "hhfdhjsdbhsdjdsbfvvdhfjdgsghgsdhghsdhsdghsgdhghgsdh",
+  apikey: process.env.API_KEY_BT,
 };
 
 async function fetchData() {
