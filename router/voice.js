@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-
-router.get('/:id', (req, res) => {
-    resultte=[];
-    res.render('index',{data:resultte});
+console.log("halaman voice ready");
+router.get("/:id", (req, res) => {
+  resultte = [];
+  res.render("index", { data: resultte });
 });
 
 module.exports = router;

@@ -77,8 +77,9 @@ client.on("message", async (msg) => {
         msg.reply(media);
       })
       .catch((error) => console.error("Gagal mengambil screenshot:", error));
-  } else if (msg.body.startsWith("!ssw")) {
+  } else if (msg.body.startsWith("!vmc")) {
     msg.react("🕵️‍♂️");
+
     const websiteUrl = msg.body.split(" ")[1];
     takessw(websiteUrl)
       .then((base64String) => {

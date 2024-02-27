@@ -15,6 +15,30 @@ async function fetchData() {
     throw error;
   }
 }
+const postData = async (t, p, te, gam) => {
+  try {
+    const response = await axios.post(
+      "http://api.bungtemin.net/voicemember/post",
+      {
+        nomer: te,
+        text: t,
+        proses: p,
+        gambar: gam,
+      },
+      {
+        headers: {
+          // Tambahkan header jika diperlukan, misalnya content type
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Terjadi kesalahan:", error.response);
+  }
+};
 async function fetchAPI(url) {
   try {
     const response = await axios.get(url, {
@@ -78,4 +102,5 @@ setInterval(async () => {
 module.exports = {
   fetchAPI: fetchAPI,
   getPdfAsBase64: getPdfAsBase64,
+  postData: postData,
 };

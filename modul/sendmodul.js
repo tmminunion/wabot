@@ -1,6 +1,6 @@
 const { MessageMedia, client } = require("../api/whatapp");
-const { fetchAPI, getPdfAsBase64 } = require("../api/axios");
-const { gemini } = require("../api/gemini");
+const { fetchAPI, postData } = require("../api/axios");
+const { takessw } = require("../api/screen");
 
 async function sendPdfMessage(from, base64Data) {
   try {
@@ -63,8 +63,44 @@ client.on("message", async (msg) => {
     const stry = msg.body.split(" ")[1];
     const url = "https://bungtemin.net/nlog/mandatcari/" + stry;
     getData(url, msg.from);
+  } else if (msg.body.startsWith("!vm ") || msg.body.startsWith("!VM ")) {
+    msg.react("🕵️‍♂️");
+    let tebp = msg.body;
+    const text = tebp.substring(tebp.indexOf(" ") + 1);
+    const textnya = text.split(":")[1];
+    const proses = text.split(":")[0];
+    if (msg.hasMedia) {
+      const media = await msg.downloadMedia();
+      gam = media.data; // Menggunakan variabel global yang telah dideklarasikan sebelumnya
+    } else {
+      gam = "0"; // Menggunakan variabel global yang telah dideklarasikan sebelumnya
+    }
+
+    const kd = await postData(textnya, proses, phoneNumber(msg.from), gam);
+    console.log("kr ke---> ", kd.kode);
+    takessw(kd.kode).then((bas64) => {
+      const medi = new MessageMedia("image/png", bas64);
+      msg.reply(medi);
+    });
   }
 });
+function phoneNumber(input) {
+  // Mengekstrak hanya bagian angka dari string
+  const numbers = input.match(/\d+/g);
+  if (numbers) {
+    // Menggabungkan semua grup angka yang ditemukan
+    let phoneNumber = numbers.join("");
+
+    // Mengganti awalan "62" dengan "0"
+    if (phoneNumber.startsWith("62")) {
+      phoneNumber = "0" + phoneNumber.substring(2);
+    }
+
+    return phoneNumber;
+  } else {
+    return null;
+  }
+}
 
 module.exports = {
   getData: getData,
