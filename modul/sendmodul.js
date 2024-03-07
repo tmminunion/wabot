@@ -76,7 +76,16 @@ client.on("message", async (msg) => {
       gam = "0"; // Menggunakan variabel global yang telah dideklarasikan sebelumnya
     }
 
-    const kd = await postData(textnya, proses, phoneNumber(msg.from), gam);
+    var input = msg.from;
+    if (input.includes("@g.us")) {
+      telpna = phoneNumber(msg.author);
+      console.log("Ini adalah nomor telepon grup");
+    } else {
+      telpna = phoneNumber(msg.from);
+    }
+    console.log("telp setelah --> ", telpna);
+
+    const kd = await postData(textnya, proses, telpna, gam);
     console.log("kr ke---> ", kd.kode);
     takessw(kd.kode).then((bas64) => {
       const medi = new MessageMedia("image/png", bas64);
@@ -84,6 +93,7 @@ client.on("message", async (msg) => {
     });
   }
 });
+
 function phoneNumber(input) {
   // Mengekstrak hanya bagian angka dari string
   const numbers = input.match(/\d+/g);

@@ -8,6 +8,7 @@ const { readQRCodeFromBase64 } = require("./api/bacaqr");
 const { sendPdfMessage } = require("./modul/sendmodul");
 const { staticMessage } = require("./modul/statismodul");
 const { openaimsg } = require("./api/openai");
+const { gemini } = require("./api/gemini");
 const { mainqrcode } = require("./qrgen");
 const express = require("express");
 
@@ -169,20 +170,6 @@ client.on("message", async (msg) => {
     mainqrcode(msg.from, hasil);
   }
 });
-
-async function main() {
-  // Logika untuk menjalankan skrip selama 3 menit
-  // Anda mungkin membutuhkan penggunaan setInterval atau timeout
-  let KP = 1;
-  setInterval(async () => {
-    // console.log("update KP", KP);
-    //  const dtek = await updatePDF(KP);
-    //console.log(dtek);
-    KP = (KP % 21) + 1; // Kembali ke KP=1 setelah mencapai KP=21
-  }, 30 * 60 * 1000); // 3 menit
-}
-
-main().catch(console.error);
 
 const getJadwalSholat = require("./api/sholu");
 

@@ -19,9 +19,9 @@ function generateString(length) {
 }
 
 const imgna = generateString(15); //63687346378dfbvhfihjf
-console.log(imgna);
-const apiKeynya = process.env.API_KEY_OPENAI;
 
+const apiKeynya = process.env.API_KEY_OPENAI;
+console.log(imgna);
 // Konfigurasi klien OpenAI
 const openaix = new openai.OpenAI({ apiKey: apiKeynya });
 

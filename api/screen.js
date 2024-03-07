@@ -49,6 +49,11 @@ async function takessw(iddna) {
     deviceScaleFactor: 1,
   });
 
+  // Fungsi yang mengembalikan promise yang ditunda
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  // Menggunakan setTimeout untuk menunda eksekusi selama 2 detik
+  await delay(2000);
   // Mengambil tangkapan layar
   const screenshotBuffer = await page.screenshot();
   await browser.close();
