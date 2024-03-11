@@ -11,8 +11,15 @@ client.on("qr", (qr) => {
 });
 client.on("ready", () => {
   console.log("Client is ready!");
-  const data = getPublicIp();
-  client.sendMessage("6285882620035@c.us", `ip baru GCP --> ${data}`);
+
+  getPublicIp()
+    .then((data) => {
+      console.log(data); // Menampilkan nilai yang dihasilkan oleh promise
+      client.sendMessage("6285882620035@c.us", `ip baru GCP --> ${data}`);
+    })
+    .catch((error) => {
+      console.error("Error:", error); // Menangani kesalahan jika terjadi
+    });
 });
 
 client.on("loading_screen", (percent, message) => {

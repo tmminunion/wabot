@@ -1,8 +1,9 @@
 const axios = require("axios");
-const { MessageMedia, client } = require("./whatapp");
+
 require("dotenv").config();
 const io = require("socket.io-client");
-const { takessw } = require("./screentiket");
+
+const olehdata = require("../modul/datawa");
 const dodollsd = process.env.API_KEY_BT;
 const headers = {
   apikey: dodollsd,
@@ -15,7 +16,10 @@ async function fetchData() {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error.message);
+    console.error(
+      "Error https://bungtemin.net/wanotif datake :",
+      error.message
+    );
     throw error;
   }
 }
@@ -86,13 +90,6 @@ async function getPdfAsBase64(url) {
 
 let intervalId;
 
-function sendText(data) {
-  const phoneNumber = data.target_audience;
-  const chatId = "62" + phoneNumber.substring(1) + "@c.us";
-  client.sendMessage(chatId, `${data.isi_news}`);
-  fetchDelete(data.id);
-}
-
 function startInterval() {
   console.log("set interval ON");
   intervalId = setInterval(async () => {
@@ -100,41 +97,25 @@ function startInterval() {
       const data = await fetchData();
       // Kirim data ke semua klien yang terhubung
       console.log("data", data);
-      if (data != null) {
-        if (data.type == "TIKET") {
-          const phoneNumber = data.target_audience;
-          const chatId = "62" + phoneNumber.substring(1) + "@c.us";
-
-          takessw(data.lampiran).then((bas64) => {
-            const medi = new MessageMedia("image/png", bas64);
-            client.sendMessage(chatId, medi, { caption: `${data.isi_news}` });
-          });
-          fetchDelete(data.id);
-        } else {
-          sendText(data);
-        }
-      } else {
-        console.log("data notif kosong");
-      }
+      olehdata(data);
     } catch (error) {
-      console.error("Error fetching data:", error.message);
+      console.error("Error interval wanotif fetching data:", error.message);
     }
   }, 30000);
 }
 
-async function kirimImage() {}
 function stopInterval() {
-  console.log("pengecekan dihentikan");
+  console.log("pengecekan berjalan dihentikan");
   clearInterval(intervalId);
 }
 
 // Inisialisasi variabel socket di luar fungsi sehingga dapat diakses secara global
 let socket;
 
-function connectSocketWithToken(token) {
+function connectSocketWithToken() {
   socket = io("https://bt-api.bungtemin.net", {
     auth: {
-      token: token, // Menggunakan token dari response Axios
+      token: process.env.API_KEY_WEBSOCKET, // Menggunakan token dari response Axios
     },
   });
 
@@ -165,21 +146,7 @@ function connectSocketWithToken(token) {
   });
 }
 
-// Data untuk permintaan POST
-const postDatasok = {
-  datauser: "cekWAsok", // Sesuaikan nilai ini
-  pwd: process.env.API_KEY_WEBSOCKET, // Sesuaikan nilai ini
-};
-
-axios
-  .post("https://api.bungtemin.net/websocket", postDatasok)
-  .then(function (response) {
-    const token = response.data.token; // Asumsi response mengandung 'token'
-    connectSocketWithToken(token);
-  })
-  .catch(function (error) {
-    console.log("Error saat mendapatkan token:", error);
-  });
+connectSocketWithToken();
 
 // Ekspor fetchDelete dan fetchData sebagai properti dari objek default
 module.exports = {
