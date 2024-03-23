@@ -10,10 +10,17 @@ async function handler(data) {
     data.kanal_notifikasi + ".pdf"
   );
   // Mengirim pesan media ke nomor yang dituju
-  await client.sendMessage(chatId, media, { caption: `${data.isi_news}` });
+  await client
+    .sendMessage(chatId, media, { caption: `${data.isi_news}` })
+    .then((response) => {
+      console.log("Pesan berhasil terkirim:", response);
+      fetchDelete(data.id);
+    })
+    .catch((error) => {
+      console.error("Gagal mengirim pesan:", error);
+    });
 
   // Hapus data setelah berhasil dikirim
-  fetchDelete(data.id);
 }
 
 module.exports = handler;
