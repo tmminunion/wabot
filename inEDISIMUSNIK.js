@@ -8,6 +8,7 @@ const { readQRCodeFromBase64 } = require("./api/bacaqr");
 const { sendPdfMessage } = require("./modul/sendmodul");
 const { staticMessage } = require("./modul/statismodul");
 const { openaimsg } = require("./api/openai");
+const { gemini } = require("./api/gemini");
 const { mainqrcode } = require("./qrgen");
 const express = require("express");
 

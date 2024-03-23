@@ -87,26 +87,29 @@ async function getPdfAsBase64(url) {
     throw error;
   }
 }
-
+let isIntervalRunning = false;
 let intervalId;
 
 function startInterval() {
-  console.log("set interval ON");
-  intervalId = setInterval(async () => {
-    try {
-      const data = await fetchData();
-      // Kirim data ke semua klien yang terhubung
-      console.log("data", data);
-      olehdata(data);
-    } catch (error) {
-      console.error("Error interval wanotif fetching data:", error.message);
-    }
-  }, 30000);
+  if (!isIntervalRunning) {
+    console.log("set interval ON");
+    intervalId = setInterval(async () => {
+      try {
+        const data = await fetchData();
+        console.log("data", data);
+        olehdata(data);
+      } catch (error) {
+        console.error("Error interval wanotif fetching data:", error.message);
+      }
+    }, 60000);
+    isIntervalRunning = true;
+  }
 }
 
 function stopInterval() {
   console.log("pengecekan berjalan dihentikan");
   clearInterval(intervalId);
+  isIntervalRunning = false;
 }
 
 // Inisialisasi variabel socket di luar fungsi sehingga dapat diakses secara global
@@ -126,7 +129,6 @@ function connectSocketWithToken() {
   socket.on("lampuStatus", (status) => {
     console.log("Status lampu:", status);
     if (status == "On") {
-      stopInterval();
       console.log("ada perintah ON");
       startInterval();
     } else {
@@ -136,8 +138,6 @@ function connectSocketWithToken() {
   });
 
   socket.on("connect_error", (err) => {
-    console.log(err instanceof Error); // true
-    console.log(err.message); // not authorized
     console.log(err.data); // { content: "Please retry later" }
   });
 
@@ -147,6 +147,15 @@ function connectSocketWithToken() {
 }
 
 connectSocketWithToken();
+
+const { dbta } = require("../service/firebase");
+const { getDatabase, ref, onValue } = require("firebase/database");
+
+const starCountRef = ref(dbta, "/DATAVM/mesinVM");
+onValue(starCountRef, (snapshot) => {
+  const data = snapshot.val();
+  console.log("data fiurebase", data);
+});
 
 // Ekspor fetchDelete dan fetchData sebagai properti dari objek default
 module.exports = {
