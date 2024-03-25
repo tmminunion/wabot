@@ -7,7 +7,7 @@ async function getPublicIp() {
   try {
     // Ganti dengan informasi yang sesuai dengan instance Anda
     const project = "nufat-eltijany";
-    const zone = "us-west4-b";
+    const zone = "asia-southeast2-a";
     const instanceName = "nufatcloud";
 
     // Construct request

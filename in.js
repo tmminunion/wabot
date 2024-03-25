@@ -10,7 +10,6 @@ const { staticMessage } = require("./modul/statismodul");
 const { openaimsg } = require("./api/openai");
 const { mainqrcode } = require("./qrgen");
 const express = require("express");
-
 const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -23,7 +22,6 @@ routerFiles.forEach((file) => {
   const routerPath = path.join(routersDir, file);
   const router = require(routerPath);
   const routeName = "/" + file.split(".")[0]; // Ambil nama file tanpa ekstensi
-
   app.use(routeName, router);
 });
 
@@ -167,24 +165,5 @@ client.on("message", async (msg) => {
     let hasil = text.substring(text.indexOf(" ") + 1);
     console.log(hasil);
     mainqrcode(msg.from, hasil);
-  }
-});
-
-const getJadwalSholat = require("./api/sholu");
-
-client.on("message", async (msg) => {
-  if (msg.body === "!sholat") {
-    msg.react("🕵️‍♂️");
-    const data = await getJadwalSholat();
-    if (data) {
-      let message = `Jadwal Sholat untuk ${data.data.lokasi}, ${data.data.daerah} pada tanggal ${data.data.jadwal.tanggal}:\n\n`;
-      Object.entries(data.data.jadwal).forEach(([key, value]) => {
-        message += `${key.toUpperCase()}: ${value}\n`;
-      });
-
-      msg.reply(message);
-    } else {
-      msg.reply("Maaf, gagal mendapatkan data jadwal sholat.");
-    }
   }
 });
