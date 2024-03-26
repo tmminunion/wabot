@@ -61,24 +61,27 @@ async function waktou(client, MessageMedia) {
         try {
           await client
             .sendMessage(chatId, `${data.text}`)
-            .then((response) => {
-              console.log("Pesan berhasil terkirim:", response);
+            .then(async (response) => {
+              console.log("Pesan berhasil terkirim ke :", chatId);
+              await sendMessageWithDelay(
+                process.env.ADMIN_PUK_EA,
+                "Notifikasi untuk Admin 1",
+                30000,
+                client
+              );
             })
             .catch((error) => {
               console.error("Gagal mengirim pesan:", error);
             });
 
           const mediapdf = MessageMedia.fromFilePath(
-            "/home/nufateltijany/howto.pdf"
+            "/home/nufateltijany/drive/howto.pdf"
           );
           await client
             .sendMessage(chatId, mediapdf)
             .then(async (response) => {
               console.log("Pesan berhasil terkirim:", response);
-
-              // Perlu menggunakan metode delete() pada objek dokumen (doc), bukan pada variabel docRef yang tidak didefinisikan dalam kode Anda
-              await doc.ref.delete(); // Menghapus dokumen dari Firestore
-
+              await doc.ref.delete();
               console.log(`Document ${doc.id} successfully deleted.`);
             })
             .catch((error) => {
@@ -138,6 +141,21 @@ async function waktou(client, MessageMedia) {
       console.error(`Encountered error: ${error}`);
     }
   );
+}
+
+async function sendMessageWithDelay(chatId, text, delay, client) {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      try {
+        const response = await client.sendMessage(chatId, text);
+        console.log("Pesan berhasil terkirim ke :", chatId);
+        resolve(response);
+      } catch (error) {
+        console.error("Gagal mengirim pesan:", error);
+        reject(error);
+      }
+    }, delay);
+  });
 }
 
 module.exports = {

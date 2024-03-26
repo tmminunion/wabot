@@ -3,15 +3,14 @@ const { getDatabase } = require("firebase/database");
 
 // Konfigurasi Firebase untuk menggunakan emulator
 const firebaseConfig = {
-  apiKey: "AIzaSyA7kHlC_5RxBy7g5JbFuYWjGOZ393S0-hk",
-  authDomain: "nufat-eltijany.firebaseapp.com",
-  // databaseURL:"https://nufat-eltijany-default-rtdb.asia-southeast1.firebasedatabase.app",
-  databaseURL: "http://127.0.0.1:9001/?ns=nufat-eltijany-default-rtdb",
-  projectId: "nufat-eltijany",
-  storageBucket: "nufat-eltijany.appspot.com",
-  messagingSenderId: "816575333917",
-  appId: "1:816575333917:web:58d7f5f399c27b503b28f4",
-  measurementId: "G-BNJ6JMT2JE",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 // Inisialisasi aplikasi Firebase
