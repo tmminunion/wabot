@@ -52,7 +52,7 @@ async function waktou(client, MessageMedia) {
   collectionRef.onSnapshot(
     async (snapshot) => {
       console.log("Firestore connected successfully.");
-      snapshot.docs.forEach(async (doc) => {
+      snapshot.docs.forEach(async (doc, index) => {
         console.log("ada snapshot");
         var data = doc.data();
         const phoneNumber = data.Telp;
@@ -63,9 +63,10 @@ async function waktou(client, MessageMedia) {
             .sendMessage(chatId, `${data.text}`)
             .then(async (response) => {
               console.log("Pesan berhasil terkirim ke :", chatId);
+              kata = `Notifikasi untuk Admin:/n  ${data.text}`;
               await sendMessageWithDelay(
                 process.env.ADMIN_PUK_EA,
-                "Notifikasi untuk Admin 1",
+                kata,
                 30000,
                 client
               );
@@ -83,6 +84,16 @@ async function waktou(client, MessageMedia) {
               console.log("Pesan berhasil terkirim:", response);
               await doc.ref.delete();
               console.log(`Document ${doc.id} successfully deleted.`);
+
+              // Set a timeout of 45 seconds before processing the next document
+              if (index < snapshot.docs.length - 1) {
+                setTimeout(() => {
+                  console.log(
+                    "Waiting for 45 seconds before sending the next message..."
+                  );
+                  // Continue to the next document after the timeout
+                }, 45000); // 45 seconds in milliseconds
+              }
             })
             .catch((error) => {
               console.error("Gagal mengirim pesan:", error);
